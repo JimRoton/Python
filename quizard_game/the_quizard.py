@@ -76,7 +76,7 @@ class quizard_quotes:
 
 class quizard:
     
-    def get_question(self, question_level: int, question_type: int) -> question:
+    def get_question(self, question_type: int, question_level: int) -> question:
         num1 = self.get_random_number(question_level)
         num2 = self.get_random_number(question_level)
 
