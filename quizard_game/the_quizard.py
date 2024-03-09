@@ -1,3 +1,5 @@
+import random
+
 class question:
     def __init__(self, num1: int, num2: int, question_type: int):
         self.num1 = num1
@@ -17,15 +19,15 @@ class question:
         else:
             return "/"
     
-    # def question_answer(self, num1: int, num2: int, question_type: int) -> int:
-    #     if (question_type == 1):
-    #         return num1 + num2
-    #     elif (question_type == 2):
-    #         return num1 - num2
-    #     elif (question_type == 3):
-    #         return num1 * num2
-    #     else:
-    #         return num1 / num2
+    def get_answer(self) -> int:
+        if (self.question_type == 1):
+            return self.num1 + self.num2
+        elif (self.question_type == 2):
+            return self.num1 - self.num2
+        elif (self.question_type == 3):
+            return self.num1 * self.num2
+        else:
+            return self.num1 / self.num2
 
 class quizard_quotes:
     quotes = [
@@ -36,18 +38,29 @@ class quizard_quotes:
         "Let's get started!!!",
         "Great you chose %question_type%!",
         "Great you chose %question_level%!",
-        "Let's get started with your first question."
+        "Let's get started with your first question.",
+        "What is the answer to: %question_statement%? "
     ]
 
     questions = [
-        "Tell us your name player:",
-        "%player_name%, first pick your question type (1/2/3/4):",
-        "And now pick your question level (1/2/3):"
+        "Tell us your name player: ",
+        "%player_name%, first pick your question type (1/2/3/4): ",
+        "And now pick your question level (1/2/3): "
     ]
 
-    successes = []
+    successes = [
+        "You're right!!! Nice job!!",
+        "Wow, you got it right!!",
+        "Right on, great answer!!",
+        "You got it right!!"
+    ]
 
-    failures = []
+    failures = [
+        "Oh, sorry, that's not right. The correct answer was %correct_answer%",
+        "That's no the right answer. The answer was %correct_answer%",
+        "No, the answer was %correct_answer%, try again.",
+        "Too bad, that's not right. The right answer was %correct_answer%"
+    ]
 
     def get_quote(idx: int) -> str:
         return quizard_quotes.quotes[idx]
@@ -56,32 +69,28 @@ class quizard_quotes:
         return quizard_quotes.questions[idx]
     
     def get_random_success() -> str:
-        pass
+        return quizard_quotes.successes[random.randint(0, len(quizard_quotes.successes) -1)]
 
-    def get_random_failure() -> str:
-        pass
+    def get_random_failure(correct_answer: int) -> str:
+        return f"{quizard_quotes.failures[random.randint(0, len(quizard_quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer))
 
 class quizard:
-
-    def __init__(self, question_type: int, question_level: int) -> question:
-        self.question_type = question_type
-        self.question_level = question_level
     
-    def get_question(self):
-        
-        #addition
-        if (self.question_type == 1):
-            q = question(1, 5, 1)
-            return q
+    def get_question(self, question_level: int, question_type: int) -> question:
+        num1 = self.get_random_number(question_level)
+        num2 = self.get_random_number(question_level)
 
-        #subtraction
-        elif (self.question_type == 2):
-            print("subtraction")
-
-        #multiplication
-        elif (self.question_type == 3):
-            print("multiplication")
-
-        #division
+        if (num1 > num2):
+            q = question(num1, num2, question_type)
         else:
-            print("division")
+            q = question(num2, num1, question_type)
+
+        return q
+
+    def get_random_number(self, question_level: int) -> int:
+        if (question_level == 1):
+            return random.randint(1, 9)
+        elif (question_level == 2):
+            return random.randint(10, 99)
+        else:
+            return random.randint(100, 999)
