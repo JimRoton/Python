@@ -1,5 +1,11 @@
 import random
 
+class colors:
+    default = "\033[0m"
+    green   = "\033[32m"
+    red     = "\033[31m"
+    yellow  = "\033[33m"
+
 class question:
     def __init__(self, num1: int, num2: int, question_type: int):
         self.num1 = num1
@@ -49,17 +55,17 @@ class quizard_quotes:
     ]
 
     successes = [
-        "You're right!!! Nice job!!",
-        "Wow, you got it right!!",
-        "Right on, great answer!!",
-        "You got it right!!"
+        "You're right! Nice job!",
+        "Wow, you got it right!",
+        "Right on, great answer!",
+        "You got it right!"
     ]
 
     failures = [
-        "Oh, sorry, that's not right. The correct answer was %correct_answer%",
-        "That's no the right answer. The answer was %correct_answer%",
-        "No, the answer was %correct_answer%, try again.",
-        "Too bad, that's not right. The right answer was %correct_answer%"
+        "Oh, sorry, that's not right. The correct answer was %color%%correct_answer%%default_color%",
+        "That's no the right answer. The answer was %color%%correct_answer%%default_color%",
+        "No, the answer was %color%%correct_answer%%default_color%, try again.",
+        "Too bad, that's not right. The right answer was %color%%correct_answer%%default_color%"
     ]
 
     def get_quote(idx: int) -> str:
@@ -69,13 +75,16 @@ class quizard_quotes:
         return quizard_quotes.questions[idx]
     
     def get_random_success() -> str:
-        return quizard_quotes.successes[random.randint(0, len(quizard_quotes.successes) -1)]
+        return f"{quizard_quotes.successes[random.randint(0, len(quizard_quotes.successes) -1)]}"
 
-    def get_random_failure(correct_answer: int) -> str:
-        return f"{quizard_quotes.failures[random.randint(0, len(quizard_quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer))
+    def get_random_failure(correct_answer: int, color: str) -> str:
+        return f"{quizard_quotes.failures[random.randint(0, len(quizard_quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer)).replace("%color%", color).replace("%default_color%", colors.default)
 
 class quizard:
-    
+    player_name: str = "Player Name"
+    question_type: int = 0
+    question_level: int = 0
+
     def get_question(self, question_type: int, question_level: int) -> question:
         num1 = self.get_random_number(question_level)
         num2 = self.get_random_number(question_level)
@@ -94,3 +103,21 @@ class quizard:
             return random.randint(10, 99)
         else:
             return random.randint(100, 999)
+
+    def question_type_to_name(question_type: int) -> str:
+        if (question_type == 1):
+            return "Addition"
+        elif (question_type == 2):
+            return "Subtraction"
+        elif (question_type == 3):
+            return "Multiplication"
+        else:
+            return "Division"
+
+    def question_level_to_name(question_level: int) -> str:
+        if (question_level == 1):
+            return "Easy"
+        elif (question_level == 2):
+            return "Medium"
+        else:
+            return "Hard"
