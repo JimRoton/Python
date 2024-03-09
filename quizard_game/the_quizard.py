@@ -35,7 +35,7 @@ class question:
         else:
             return self.num1 / self.num2
 
-class quizard_quotes:
+class quotes:
     quotes = [
         "Welcome to the Quizard Game!!!",
         "I'm your host... The Quizard!!!",
@@ -45,13 +45,17 @@ class quizard_quotes:
         "Great you chose %question_type%!",
         "Great you chose %question_level%!",
         "Let's get started with your first question.",
-        "What is the answer to: %question_statement%? "
+        "What is the answer to: %question_statement%? ",
+        "You won %win% times and lost %loss% times.",
+        "Addition         = 1\nSubtraction      = 2\nMultiplication   = 3\nDivision         = 4",
+        "Easy             = 1\nMedium           = 2\nHeard            = 3\n"
     ]
 
     questions = [
         "Tell us your name player: ",
-        "%player_name%, first pick your question type (1/2/3/4): ",
-        "And now pick your question level (1/2/3): "
+        "%player_name%, first pick your question type...",
+        "And now pick your question level...",
+        "Would you like to play again (Y/N)?"
     ]
 
     successes = [
@@ -69,16 +73,16 @@ class quizard_quotes:
     ]
 
     def get_quote(idx: int) -> str:
-        return quizard_quotes.quotes[idx]
+        return quotes.quotes[idx]
     
     def get_question(idx: int) -> str:
-        return quizard_quotes.questions[idx]
+        return quotes.questions[idx]
     
     def get_random_success() -> str:
-        return f"{quizard_quotes.successes[random.randint(0, len(quizard_quotes.successes) -1)]}"
+        return f"{quotes.successes[random.randint(0, len(quotes.successes) -1)]}"
 
     def get_random_failure(correct_answer: int, color: str) -> str:
-        return f"{quizard_quotes.failures[random.randint(0, len(quizard_quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer)).replace("%color%", color).replace("%default_color%", colors.default)
+        return f"{quotes.failures[random.randint(0, len(quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer)).replace("%color%", color).replace("%default_color%", colors.default)
 
 class quizard:
     player_name: str = "Player Name"

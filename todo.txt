@@ -1,0 +1,2 @@
+1. Finish colors
+2. Add counter for questions and total time played

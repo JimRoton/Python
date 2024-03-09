@@ -1,9 +1,6 @@
 import os
 import time
-from the_quizard import colors as colors, quizard as quizard, question as question, quizard_quotes as quotes
-# from the_quizard import quizard as quizard
-# from the_quizard import question as question
-# from the_quizard import quizard_quotes as quotes
+from the_quizard import colors as colors, quizard as quizard, question as question, quotes as quotes
 
 def clear_screen():
     if (os.name == "NT"):
@@ -12,24 +9,49 @@ def clear_screen():
         os.system("clear")
 
 def get_type_and_level():
-    quizard.question_type = int(input(f"{quotes.get_question(1)}".replace("%player_name%", quizard.player_name)))
+    print(f"{quotes.get_question(1)}".replace("%player_name%", quizard.player_name))
+    print(quotes.get_quote(10))
+    quizard.question_type = int(input("Question Type: "))
     time.sleep(1)
     print(f"{quotes.get_quote(5)}".replace("%question_type%", quizard.question_type_to_name(quizard.question_type)))
-    time.sleep(1)
-    quizard.question_level = int(input(quotes.get_question(2)))
+    time.sleep(2)
+
+    print(quotes.get_question(2))
+    print(quotes.get_quote(11))
+    quizard.question_level = int(input("Question Level: "))
     time.sleep(1)
     print(f"{quotes.get_quote(6)}".replace("%question_level%", quizard.question_level_to_name(quizard.question_level)))
     time.sleep(2)
 
-def ask_question():
+def ask_question() -> bool:
     qz = quizard()
     q = qz.get_question(quizard.question_type, quizard.question_level)
     a = int(input(f"{quotes.get_quote(8)}".replace("%question_statement%", q.get_question_statement())))
 
     if (a == q.get_answer()):
-        print(quotes.get_random_success(colors.green))
+        print(quotes.get_random_success())
+        return True
     else:
         print(quotes.get_random_failure(q.get_answer(), colors.green))
+        return False
+
+def start_game() -> any:
+    i = 1
+    win = 0
+    loss = 0
+    while (i <= 10):
+        clear_screen()
+
+        print (f"Question {i}:")
+        if (ask_question()):
+            win += 1
+        else:
+            loss += 1
+    
+        i += 1
+        time.sleep(3)
+
+    return win, loss
 
 clear_screen()
 print(quotes.get_quote(0))
@@ -53,8 +75,12 @@ print(quotes.get_quote(7))
 time.sleep(2)
 
 while True:
-    clear_screen()
-    ask_question()
+    win, loss = start_game()
+    
+    print(f"{quotes.get_quote(9)}".replace("%win%", str(win)).replace("%loss%", str(loss)))
 
-    if (input("Would you like another question (y/n)?") == "n"):
+    if (input(quotes.get_question(3)) == "Y", "y"):
+        clear_screen()
+        get_type_and_level()
+    else:
         break
