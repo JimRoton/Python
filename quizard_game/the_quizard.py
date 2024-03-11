@@ -5,6 +5,22 @@ class colors:
     green   = "\033[32m"
     red     = "\033[31m"
     yellow  = "\033[33m"
+    blue    = "\033[34m"
+    purple  = "\033[35"
+    cyan    = "\033[36"
+
+    random_colors  = [
+        "\033[31m",
+        "\033[32m",
+        "\033[33m",
+        "\033[34m",
+        "\033[35m",
+        "\033[36m"
+    ]
+
+    def get_random_color():
+        i = len(colors.random_colors) -1
+        return colors.random_colors[random.randint(0, i)]
 
 class question:
     def __init__(self, num1: int, num2: int, question_type: int):
@@ -40,20 +56,20 @@ class quotes:
         "Welcome to the Quizard Game!!!",
         "I'm your host... The Quizard!!!",
         "Let's meet our contestant!!!",
-        "Welcome to the game %player_name%!!!",
+        "Welcome to the game %color%%player_name%%default_color%!!!",
         "Let's get started!!!",
-        "Great you chose %question_type%!",
-        "Great you chose %question_level%!",
+        "Great you chose %color%%question_type%%default_color%!",
+        "Great you chose %color%%question_level%%default_color%!",
         "Let's get started with your first question.",
-        "What is the answer to: %question_statement%? ",
-        "You won %win% times and lost %loss% times.",
+        "What is the answer to: %color%%question_statement%%default_color%? ",
+        "You won %color%%win%%default_color% times and lost %color%%loss%%default_color% times.",
         "Addition         = 1\nSubtraction      = 2\nMultiplication   = 3\nDivision         = 4",
         "Easy             = 1\nMedium           = 2\nHeard            = 3\n"
     ]
 
     questions = [
         "Tell us your name player: ",
-        "%player_name%, first pick your question type...",
+        "%color%%player_name%%default_color%, first pick your question type...",
         "And now pick your question level...",
         "Would you like to play again (Y/N)?"
     ]
@@ -67,22 +83,31 @@ class quotes:
 
     failures = [
         "Oh, sorry, that's not right. The correct answer was %color%%correct_answer%%default_color%",
-        "That's no the right answer. The answer was %color%%correct_answer%%default_color%",
+        "That's not the right answer. The answer was %color%%correct_answer%%default_color%",
         "No, the answer was %color%%correct_answer%%default_color%, try again.",
         "Too bad, that's not right. The right answer was %color%%correct_answer%%default_color%"
     ]
 
-    def get_quote(idx: int) -> str:
-        return quotes.quotes[idx]
+    def get_quote(idx: int, color: str = colors.green) -> str:
+        return f"{quotes.quotes[idx]}".replace("%color%", color).replace("%default_color%", colors.default)
     
-    def get_question(idx: int) -> str:
-        return quotes.questions[idx]
-    
+    def get_question(idx: int, color: str = colors.green) -> str:
+        return f"{quotes.questions[idx]}".replace("%color%", color).replace("%default_color%", colors.default)
+
     def get_random_success() -> str:
         return f"{quotes.successes[random.randint(0, len(quotes.successes) -1)]}"
 
     def get_random_failure(correct_answer: int, color: str) -> str:
         return f"{quotes.failures[random.randint(0, len(quotes.failures) -1)]}".replace("%correct_answer%", str(correct_answer)).replace("%color%", color).replace("%default_color%", colors.default)
+
+    def get_rainbow_quote(idx: int) -> str:
+        str = quotes.quotes[idx]
+        rtn = ""
+
+        for chr in str:
+            rtn += colors.get_random_color() + chr
+        
+        return rtn + colors.default
 
 class quizard:
     player_name: str = "Player Name"
