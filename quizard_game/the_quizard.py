@@ -1,4 +1,5 @@
 import random
+from datetime import datetime as datetime
 
 class colors:
     default = "\033[0m"
@@ -23,6 +24,10 @@ class colors:
         return colors.random_colors[random.randint(0, i)]
 
 class question:
+    answer: int
+    start_time: datetime
+    end_time: datetime
+
     def __init__(self, num1: int, num2: int, question_type: int):
         self.num1 = num1
         self.num2 = num2
@@ -51,6 +56,9 @@ class question:
         else:
             return self.num1 / self.num2
 
+    def get_total_time(self) -> int:
+        return (self.end_time - self.start_time).seconds
+
 class quotes:
     quotes = [
         "Welcome to the Quizard Game!!!",
@@ -64,7 +72,9 @@ class quotes:
         "What is the answer to: %color%%question_statement%%default_color%? ",
         "You won %color%%win%%default_color% times and lost %color%%loss%%default_color% times.",
         "Addition         = 1\nSubtraction      = 2\nMultiplication   = 3\nDivision         = 4",
-        "Easy             = 1\nMedium           = 2\nHeard            = 3\n"
+        "Easy             = 1\nMedium           = 2\nHeard            = 3\n",
+        "You took %color%%seconds%%default_color% seconds on this question.",
+        "Your game took a total of %color%%total_time%%default_color% seconds."
     ]
 
     questions = [

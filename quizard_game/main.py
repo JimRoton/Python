@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime as datetime
 from the_quizard import colors as colors, quizard as quizard, question as question, quotes as quotes
 
 def clear_screen():
@@ -23,36 +24,42 @@ def get_type_and_level():
     print(f"{quotes.get_quote(6)}".replace("%question_level%", quizard.question_level_to_name(quizard.question_level)))
     time.sleep(2)
 
-def ask_question() -> bool:
+def ask_question() -> question:
     qz = quizard()
     q = qz.get_question(quizard.question_type, quizard.question_level)
 
-    a = int(input(f"{quotes.get_quote(8)}".replace("%question_statement%", q.get_question_statement())))
+    q.start_time = datetime.now()
+    q.answer = int(input(f"{quotes.get_quote(8)}".replace("%question_statement%", q.get_question_statement())))
+    q.end_time = datetime.now()
 
-    if (a == q.get_answer()):
-        print(quotes.get_random_success())
-        return True
-    else:
-        print(quotes.get_random_failure(q.get_answer(), colors.green))
-        return False
+    return q
 
 def start_game() -> any:
     i = 1
     win = 0
     loss = 0
+    total_time = 0
+
     while (i <= 10):
         clear_screen()
 
         print (f"Question {i}:")
-        if (ask_question()):
+        q = ask_question()
+
+        if (q.answer == q.get_answer()):
+            print(quotes.get_random_success())
             win += 1
         else:
+            print(quotes.get_random_failure(q.get_answer(), colors.green))
             loss += 1
+
+        print(f"{quotes.get_quote(12)}".replace("%seconds%", str(q.get_total_time())))
+        total_time += q.get_total_time()
     
         i += 1
         time.sleep(3)
 
-    return win, loss
+    return win, loss, total_time
 
 def main():
     clear_screen()
@@ -77,7 +84,7 @@ def main():
     time.sleep(2)
 
     while True:
-        win, loss = start_game()
+        win, loss, total_time = start_game()
         
         if (win < loss):
             print(f"{quotes.get_quote(9, colors.red)}".replace("%win%", str(win)).replace("%loss%", str(loss)))
@@ -85,6 +92,8 @@ def main():
             print(f"{quotes.get_quote(9, colors.yellow)}".replace("%win%", str(win)).replace("%loss%", str(loss)))
         else:
             print(f"{quotes.get_quote(9, colors.green)}".replace("%win%", str(win)).replace("%loss%", str(loss)))
+
+        print(f"{quotes.get_quote(13, colors.green)}".replace("%total_time%", str(total_time)))
 
         if (input(quotes.get_question(3)).upper() == "Y"):
             clear_screen()
