@@ -1,6 +1,6 @@
 import os
 import time
-from datetime import datetime as datetime
+from datetime import datetime as datetime, timedelta as timedelta
 from the_quizard import colors as colors, quizard as quizard, question as question, quotes as quotes
 
 def clear_screen():
@@ -101,4 +101,14 @@ def main():
         else:
             break
 
+q = question(10, 10, 1)
+q.start_time = datetime.now()
+q.end_time = q.start_time + timedelta(seconds=3661)
+
+s = q.get_mod_seconds()
+m = q.get_mod_minutes()
+h = q.get_mod_hours()
+print(s)
+print(m)
+print(h)
 main()

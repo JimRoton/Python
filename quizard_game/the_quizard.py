@@ -59,6 +59,15 @@ class question:
     def get_total_time(self) -> int:
         return (self.end_time - self.start_time).seconds
 
+    def get_mod_seconds(self) -> int:
+        return self.get_total_time() % 60
+    
+    def get_mod_minutes(self) -> int:
+        return (self.get_total_time() - self.get_mod_seconds()) % 60
+    
+    def get_mod_hours(self) -> int:
+        return (self.get_mod_minutes()) % 60
+
 class quotes:
     quotes = [
         "Welcome to the Quizard Game!!!",
