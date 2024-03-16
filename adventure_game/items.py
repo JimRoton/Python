@@ -1,6 +1,6 @@
 class item:
-    id: int
-    name: str
+    id:     int
+    name:   str
     damage: int
 
     def __init__(self, id: int, name: str, damage: int) -> None:
@@ -42,3 +42,16 @@ class items:
 
         self.items[x] = item
         return True
+
+    def delete(self, item: item) -> bool:
+        if (self.contains(item) == False):
+            return False
+
+        x = 0
+        for i in self.items:
+            if i.id == item.id:
+                break
+            else:
+                x = x + 1
+
+        self.items.remove(self.items[x])
